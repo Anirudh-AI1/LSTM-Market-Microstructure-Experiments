@@ -1,0 +1,2 @@
+# LSTM-Market-Microstructure-Experiments
+A quantitative research autopsy documenting why Deep Learning (LSTMs) struggles with noisy financial time-series data. Includes two fully engineered PyTorch architectures (Sector-Peer mapping and 12-Year historical sequences) complete with walk-forward validation, adaptive thresholding, and backtesting. Concludes with a post-mortem on why Gradient Boosted Trees (XGBoost) remain superior for tabular market regimes.
