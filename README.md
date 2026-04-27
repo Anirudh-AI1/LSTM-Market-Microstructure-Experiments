@@ -1,5 +1,3 @@
-# LSTM-Market-Microstructure-Experiments
-A quantitative research autopsy documenting why Deep Learning (LSTMs) struggles with noisy financial time-series data. Includes two fully engineered PyTorch architectures (Sector-Peer mapping and N-Year historical sequences) complete with walk-forward validation, adaptive thresholding, and backtesting. Concludes with a post-mortem on why Gradient Boosted Trees (XGBoost) remain superior for tabular market regimes.
 <div align="center">
 
 # 📉 LSTM Market Microstructure Experiments
@@ -31,6 +29,9 @@ Theoretically, an LSTM should perfectly map the sequential nature of market mome
 * **Walk-Forward Validation:** Trained in rolling chronological chunks (10 years train, 2 years test) to prevent future data leakage.
 * **Loss & Architecture:** A `SimpleLSTM` optimized with `SmoothL1Loss` to gently handle market outliers without ripping the weights apart.
 
+### Live Execution & Backtest Accounting
+![Sector Model Terminal Output](assets/sector_tsla.png.png)
+
 ### 🩸 The Autopsy: Why it Backfired
 Despite heavy engineering, the model suffered massive negative alpha (e.g., underperforming Buy & Hold on GOOGL by -488%). 
 1. **The Cross-Asset Fallacy:** Forcing the network to learn the market microstructure of legacy automakers and applying it to a hyper-growth tech stock broke the math. Institutional capital flows through these assets differently; the network learned a "blended" behavior that doesn't actually exist in the real world.
@@ -46,6 +47,10 @@ Despite heavy engineering, the model suffered massive negative alpha (e.g., unde
 * **Scaled Dot-Product Attention:** An attention head was bolted onto the LSTM to dynamically score which specific days in the 60-day lookback window actually mattered (e.g., an earnings gap vs. a flat Tuesday).
 * **Focal Loss:** Replaced standard Binary Cross-Entropy with `FocalLoss` ($\gamma=1.5$) to mathematically punish the network for getting "hard" predictions wrong.
 * **Execution:** A strict swing-trading policy holding for 3 days to beat the bid/ask spread, utilizing adaptive conviction thresholds (only trading the top 20% of signals).
+
+### Live Execution & Backtest Accounting
+![Single Stock Summary Table](assets/single_tsla_summary.png.png)
+![Single Stock Detailed Backtest](assets/single_tsla_details.png.png)
 
 ### 🩸 The Autopsy: Why it Backfired
 Despite flawless architectural compilation, the model yielded a ~49% win rate and negative Sharpe ratios.
